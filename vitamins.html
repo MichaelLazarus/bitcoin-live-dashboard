@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vitamins for Mental Health</title>
+  <style>
+    body { margin:0; padding:0; background:#0d1117; color:#c9d1d9; font-family:system-ui,sans-serif; min-height:100vh; display:flex; flex-direction:column }
+    header { background:#161b22; padding:2rem; text-align:center }
+    h1 { margin:0; color:#58a6ff; font-size:2.8rem }
+    main { flex:1; padding:2rem; max-width:1100px; margin:0 auto; width:100% }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:1.5rem }
+    .card { background:#161b22; border-radius:12px; padding:1.8rem; border:1px solid #30363d; transition:all 0.3s }
+    .card:hover { transform:translateY(-8px); box-shadow:0 12px 32px rgba(0,0,0,0.4); border-color:#f0883e }
+    .vitamin { font-size:1.8rem; font-weight:bold; color:#f0883e; margin-bottom:0.5rem }
+    .benefits { line-height:1.6; margin:1rem 0 }
+    .source a { color:#58a6ff; text-decoration:none }
+    .source a:hover { text-decoration:underline }
+    footer { padding:1.5rem; text-align:center; background:#161b22; font-size:0.9rem; color:#8b949e }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧠 Vitamins & Minerals for Mental Health</h1>
+    <p>Evidence-based nutrients that support mood, cognition, and emotional well-being</p>
+  </header>
+
+  <main>
+    <div class="grid">
+      <div class="card">
+        <div class="vitamin">Vitamin D</div>
+        <div class="benefits">Reduces depression · Improves mood regulation · Critical for serotonin</div>
+        <div class="source"><a href="https://pubmed.ncbi.nlm.nih.gov/34233182/" target="_blank">Meta-analysis 2021</a></div>
+      </div>
+      <div class="card">
+        <div class="vitamin">Omega-3 (EPA + DHA)</div>
+        <div class="benefits">Anti-inflammatory for brain · Reduces depression & anxiety</div>
+        <div class="source"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6324500/" target="_blank">Translational Psychiatry</a></div>
+      </div>
+      <div class="card">
+        <div class="vitamin">B Complex</div>
+        <div class="benefits">Essential for neurotransmitter production · Lowers depression risk</div>
+        <div class="source"><a href="https://pubmed.ncbi.nlm.nih.gov/33877667/" target="_blank">Meta-analysis</a></div>
+      </div>
+      <div class="card">
+        <div class="vitamin">Magnesium</div>
+        <div class="benefits">Calms anxiety · Improves sleep · Reduces OCD symptoms</div>
+        <div class="source"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5452159/" target="_blank">Nutrients 2017</a></div>
+      </div>
+      <!-- Add more if you want -->
+    </div>
+  </main>
+
+  <footer>All links point to peer-reviewed studies • November 2025</footer>
+</body>
+</html>

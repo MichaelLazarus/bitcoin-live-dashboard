@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>₿ Live Bitcoin Price</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2"></script>
+  <style>
+    body{margin:0;padding:0;background:#0d1117;height:100vh;display:flex;flex-direction:column;font-family:system-ui,sans-serif;color:#c9d1d9}
+    header{padding:2rem 1rem;text-align:center;background:#161b22}
+    #price{font-size:4.5rem;font-weight:800;margin:0;color:#f0883e;text-shadow:0 0 20px rgba(240,136,62,0.5)}
+    main{flex:1;padding:1rem}
+    canvas{display:block;width:100%!important;height:100%!important;background:#161b22;border-radius:12px}
+    footer{padding:.5rem;text-align:center;color:#8b949e;font-size:.9rem;background:#161b22}
+    nav a { color:#58a6ff; margin:0 1rem; font-size:1.2rem; text-decoration:none }
+    nav a:hover { text-decoration:underline }
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="price">$... <span style="font-size:1.5rem">USD</span></h1>
+  <p id="change">Loading...</p>
+  <nav>
+    <a href="/">Bitcoin Chart</a> • <a href="/vitamins.html">🧠 Vitamins for Mental Health</a>
+  </nav>
+</header>
+<main><canvas id="priceChart"></canvas></main>
+<footer>CoinGecko • Hover for exact price • Drag to zoom</footer>
+
+<script>
+  const chart = new Chart(document.getElementById('priceChart'), {
+    type: 'line',
+    data: { datasets: [{
+      label: 'BTC/USD',
+      data: [],
+      borderColor: '#f0883e',
+      backgroundColor: 'rgba(240,136,62,0.1)',
+      fill: true,
+      tension: 0.25,
+      borderWidth: 2.5,
+      pointRadius: 0,
+      pointHoverRadius: 12,
+      pointHoverBackgroundColor: '#f0883e',
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 4,
+      hitRadius: 20
+    }]},
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'nearest', axis: 'x', intersect: false },
+      scales: {
+        x: { type: 'time', time: { unit: 'day', tooltipFormat: 'MMM dd, yyyy HH:mm' }},
+        y: { beginAtZero: false }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            title: items => new Date(items[0].parsed.x).toLocaleString(),
+            label: ctx => '$' + ctx.parsed.y.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' USD'
+          },
+          backgroundColor: 'rgba(22, 27, 34, 0.98)',
+          titleColor: '#f0883e',
+          bodyColor: '#fff',
+          borderColor: '#f0883e',
+          borderWidth: 2,
+          cornerRadius: 12,
+          displayColors: false,
+          bodyFont: { size: 26, weight: 'bold' }
+        },
+        zoom: { zoom: { wheel:{enabled:true}, pinch:{enabled:true}, mode:'xy' }, pan: {enabled:true, mode:'xy'} },
+        legend: { display: false }
+      }
+    }
+  });
+
+  const priceEl = document.getElementById('price');
+  const changeEl = document.getElementById('change');
+  const protocol = location.protocol === 'https:' ? 'wss://' : 'ws://';
+  const ws = new WebSocket(protocol + location.host);
+
+  ws.onmessage = e => {
+    const p = JSON.parse(e.data);
+    chart.data.datasets[0].data.push(p);
+    chart.update('quiet');
+    priceEl.innerHTML = '$' + p.y.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' <span style="font-size:1.5rem">USD</span>';
+    changeEl.textContent = 'Updated ' + new Date(p.x).toLocaleString();
+  };
+
+  fetch('/history').then(r=>r.json()).then(d=>{ chart.data.datasets[0].data = d; chart.update(); });
+</script>
+</body>
+</html>
